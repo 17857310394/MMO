@@ -260,6 +260,7 @@ namespace Network
                 this.clientSocket.Blocking = true;
 
                 Debug.Log(string.Format("Connect[{0}] to server {1}", this.retryTimes, this.address) + "\n");
+                //异步
                 IAsyncResult result = this.clientSocket.BeginConnect(this.address, null, null);
                 bool success = result.AsyncWaitHandle.WaitOne(NetConnectTimeout);
                 if (success)
@@ -267,6 +268,7 @@ namespace Network
                     this.clientSocket.EndConnect(result);
                 }
             }
+            //捕获网络
             catch(SocketException ex)
             {
                 if(ex.SocketErrorCode == SocketError.ConnectionRefused)
@@ -282,6 +284,7 @@ namespace Network
 
             if (this.clientSocket.Connected)
             {
+                //将阻塞模式设置为false 阻塞就是如果服务器不返回消息就会一直卡着
                 this.clientSocket.Blocking = false;
                 this.RaiseConnected(0, "Success");
             }
@@ -343,7 +346,7 @@ namespace Network
                         this.CloseConnection(NET_ERROR_ZERO_BYTE);
                         return false;
                     }
-
+                    //收到数据交给packageHandler 然后就开始关注服务器代码
                     this.packageHandler.ReceiveData(this.receiveBuffer.GetBuffer(), 0, n);
 
                 }
@@ -416,6 +419,7 @@ namespace Network
             return true;
         }
 
+        //分发器分发
         void ProceeMessage()
         {
             MessageDistributer.Instance.Distribute();

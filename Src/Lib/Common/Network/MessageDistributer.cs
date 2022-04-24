@@ -163,6 +163,7 @@ namespace Network
             Running = true;
             for (int i = 0; i < this.ThreadCount; i++)
             {
+                //多线程线程池
                 ThreadPool.QueueUserWorkItem(new WaitCallback(MessageDistribute));
             }
             while (ActiveThreadCount < this.ThreadCount)
