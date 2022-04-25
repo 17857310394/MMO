@@ -18,12 +18,13 @@ namespace GameServer.Services
 
         public void Start()
         {
-            MessageDistributer<NetConnection<NetSession>>.Instance.Subscribe<FirstTestRequest>(this.OnFirstTestRequest);
+            MessageDistributer<NetConnection<NetSession>>.Instance.Subscribe<FirstTestRequest>(this.OnFirstTestRequest); //用OnFirstTestRequest这个方法来处理这个协议
         }
 
+        //处理器
         void OnFirstTestRequest(NetConnection<NetSession> sender,FirstTestRequest request)
         {
-            Log.InfoFormat("OnFirstTestRequest:User:{0} Pass:{1}", request.helloWorld);
+            Log.InfoFormat("OnFirstTestRequest:HelloWorld:{0}", request.helloWorld);
         }
 
         public void Stop()
