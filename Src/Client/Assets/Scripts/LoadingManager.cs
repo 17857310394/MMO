@@ -42,10 +42,11 @@ public class LoadingManager : MonoBehaviour {
 
 
         // Fake Loading Simulate
-        for (float i = 50; i < 100;)
+        for (float i = 0; i < 100;)
         {
             i += Random.Range(0.1f, 1.5f);
             progressBar.value = i;
+            progressNumber.text = ((int)i).ToString() + "%";
             yield return new WaitForEndOfFrame();
         }
 
