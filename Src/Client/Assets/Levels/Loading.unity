@@ -1161,9 +1161,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4550240206479651717, guid: 62bbb2d75bb2f9746b835756f5908e21,
         type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550240206479651717, guid: 62bbb2d75bb2f9746b835756f5908e21,
+        type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 5f3953ead14712a499b56dc090c03aca, type: 2}
+    - target: {fileID: 4550240206886725361, guid: 62bbb2d75bb2f9746b835756f5908e21,
+        type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550240207068902738, guid: 62bbb2d75bb2f9746b835756f5908e21,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4550240207068902738, guid: 62bbb2d75bb2f9746b835756f5908e21,
         type: 3}
       propertyPath: m_AnchorMax.y

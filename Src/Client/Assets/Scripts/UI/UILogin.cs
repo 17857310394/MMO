@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Services;
 using SkillBridge.Message;
-
+using UnityEngine.SceneManagement;
 public class UILogin : MonoBehaviour
 {
     public InputField username;
@@ -27,7 +27,7 @@ public class UILogin : MonoBehaviour
             MessageBox.Show("请输入密码");
             return;
         }
-
+         
         UserService.Instance.SendLogin(this.username.text, this.password.text);
     }
 
@@ -37,6 +37,7 @@ public class UILogin : MonoBehaviour
         {
             //成功登录
             Debug.Log("登录成功");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("CharSelect");
         }
         else
         {

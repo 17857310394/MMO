@@ -169,13 +169,14 @@ namespace Services
             Debug.LogFormat("OnLogin:{0} [{1}]", response.Result, response.Errormsg);
 
             if (response.Result == Result.Success)
-            {//登陆成功逻辑
+            {
+                //登陆成功逻辑
                 Models.User.Instance.SetupUserInfo(response.Userinfo);
             };
             if (this.OnLogin != null)
             {
+                //UI关注用户成功登录的消息
                 this.OnLogin(response.Result, response.Errormsg);
-
             }
         }
     }
