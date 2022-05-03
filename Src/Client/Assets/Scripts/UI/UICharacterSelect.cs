@@ -14,8 +14,8 @@ public class UICharacterSelect : MonoBehaviour {
     public InputField charName;
     CharacterClass charClass;
 
-    //public Transform uiCharList;
-    //public GameObject uiCharInfo;
+    public Transform uiCharList;
+    public GameObject uiCharInfo;
 
     public List<GameObject> uiChars = new List<GameObject>();
 
@@ -34,6 +34,7 @@ public class UICharacterSelect : MonoBehaviour {
     {
         DataManager.Instance.Load();
         InitCharacterSelect(true);
+        UserService.Instance.OnCharacterCreate = this.OnCharacterCreate;
 
         for (int i = 0; i < 3; i++)
         {
@@ -54,8 +55,23 @@ public class UICharacterSelect : MonoBehaviour {
                 Destroy(old);
             }
             uiChars.Clear();
+        }
+        //遍历获取User下的所有Player角色
+        for(int i = 0; i < User.Instance.Info.Player.Characters.Count; i++)
+        {
+            GameObject go = Instantiate(uiCharInfo, this.uiCharList); //实例化一个人物选择的ui到CharList下
+            UICharInfo charInfo = go.GetComponent<UICharInfo>();
+            charInfo.info = User.Instance.Info.Player.Characters[i];
 
+            Button button = go.GetComponent<Button>();
+            int idx = i;
+            button.onClick.AddListener(() =>
+            {
+                OnSelectCharacter(idx); //添加按钮的监听
+            });
 
+            uiChars.Add(go); //将Player选择ui加入到uiChars列表中
+            go.SetActive(true);
         }
     }
 
@@ -64,15 +80,16 @@ public class UICharacterSelect : MonoBehaviour {
         panelCreate.SetActive(true);
         panelSelect.SetActive(false);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public void OnClickCreate()
     {
-        
+        //进行校验
+        if (string.IsNullOrEmpty(this.charName.text))
+        {
+            MessageBox.Show("请输入角色名称");
+            return;
+        }
+        UserService.Instance.SendCharacterCreate(this.charName.text, this.charClass); //角色名称和职业
     }
 
     public void OnSelectClass(int charClass)
@@ -109,7 +126,13 @@ public class UICharacterSelect : MonoBehaviour {
         var cha = User.Instance.Info.Player.Characters[idx];
         Debug.LogFormat("Select Char:[{0}]{1}[{2}]", cha.Id, cha.Name, cha.Class);
         User.Instance.CurrentCharacter = cha;
-        characterView.CurrentCharacter = idx;
+        characterView.CurrentCharacter = idx; //临时使用
+
+        for(int i = 0; i < User.Instance.Info.Player.Characters.Count; i++)
+        {
+            UICharInfo ci = this.uiChars[i].GetComponent<UICharInfo>();
+            ci.Selected = idx == i;  //更新UICharInfo下的Selected 更新highlight显示
+        }
     }
     public void OnClickPlay()
     {
@@ -118,4 +141,5 @@ public class UICharacterSelect : MonoBehaviour {
             MessageBox.Show("进入游戏", "进入游戏", MessageBoxType.Confirm);
         }
     }
+
 }

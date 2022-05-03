@@ -14,6 +14,7 @@ namespace Services
     {
         public UnityEngine.Events.UnityAction<Result, string> OnRegister;
         public UnityEngine.Events.UnityAction<Result, string> OnLogin;
+        public UnityEngine.Events.UnityAction<Result, string> OnCharacterCreate;
         NetMessage pendingMessage = null;
         bool connected = false;
 
@@ -23,13 +24,15 @@ namespace Services
             NetClient.Instance.OnDisconnect += OnGameServerDisconnect;  //添加连接断开事件
             MessageDistributer.Instance.Subscribe<UserRegisterResponse>(this.OnUserRegister); //订阅一个注册事件
             MessageDistributer.Instance.Subscribe<UserLoginResponse>(this.OnUserLogin);
-
+            MessageDistributer.Instance.Subscribe<UserCreateCharacterResponse>(this.OnUserCreateCharacter);
         }
+
 
         public void Dispose()
         {
             MessageDistributer.Instance.Unsubscribe<UserRegisterResponse>(this.OnUserRegister);
             MessageDistributer.Instance.Unsubscribe<UserLoginResponse>(this.OnUserLogin);
+            MessageDistributer.Instance.Unsubscribe<UserCreateCharacterResponse>(this.OnUserCreateCharacter);
             NetClient.Instance.OnConnect -= OnGameServerConnect;
             NetClient.Instance.OnDisconnect -= OnGameServerDisconnect;
         }
@@ -177,6 +180,44 @@ namespace Services
             {
                 //UI关注用户成功登录的消息
                 this.OnLogin(response.Result, response.Errormsg);
+            }
+        }
+
+        public void SendCharacterCreate(string charName, CharacterClass charClass)
+        {
+            Debug.LogFormat("CharacterCreateRequest::charName :{0} charClass:{1}", charName, charClass);
+            NetMessage message = new NetMessage();
+            message.Request = new NetMessageRequest();
+            message.Request.createChar = new UserCreateCharacterRequest();
+            message.Request.createChar.Name = charName;
+            message.Request.createChar.Class = charClass;
+
+            if (this.connected && NetClient.Instance.Connected) //已连接服务器
+            {
+                this.pendingMessage = null;
+                NetClient.Instance.SendMessage(message);
+            }
+            else //未连接服务器
+            {
+                this.pendingMessage = message; //用一个队列将消息记下来 连接上后自动发送
+                this.ConnectToServer();
+            }
+        }
+
+        void OnUserCreateCharacter(object sender, UserCreateCharacterResponse response)
+        {
+            Debug.LogFormat("OnUserCreateCharacter:{0} [{1}]", response.Result, response.Errormsg);
+
+            if(response.Result == Result.Success)
+            {
+                Models.User.Instance.Info.Player.Characters.Clear();
+                Models.User.Instance.Info.Player.Characters.AddRange(response.Characters);
+            }
+
+            if (this.OnCharacterCreate != null)
+            {
+                this.OnCharacterCreate(response.Result, response.Errormsg);
+
             }
         }
     }

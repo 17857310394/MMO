@@ -21,8 +21,9 @@ namespace GameServer
         NetService network;
         public bool Init()
         {
+            int Port = Properties.Settings.Default.ServerPort;//获取配置的端口号
             network = new NetService();
-            network.Init(8000);
+            network.Init(Port);//直接写端口号的方式
 
             DBService.Instance.Init();
             UserService.Instance.Init();
