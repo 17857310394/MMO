@@ -7,6 +7,7 @@ using Network;
 using UnityEngine;
 
 using SkillBridge.Message;
+using Models;
 
 namespace Services
 {
@@ -25,14 +26,19 @@ namespace Services
             MessageDistributer.Instance.Subscribe<UserRegisterResponse>(this.OnUserRegister); //订阅一个注册事件
             MessageDistributer.Instance.Subscribe<UserLoginResponse>(this.OnUserLogin);
             MessageDistributer.Instance.Subscribe<UserCreateCharacterResponse>(this.OnUserCreateCharacter);
+            MessageDistributer.Instance.Subscribe<UserGameEnterResponse>(this.OnGammeEnter);
+            //MessageDistributer.Instance.Subscribe<UserGameLeaveResponse>(this.OnGameLeave);
+            MessageDistributer.Instance.Subscribe<MapCharacterEnterResponse>(this.OnCharacterEnter);
         }
-
 
         public void Dispose()
         {
             MessageDistributer.Instance.Unsubscribe<UserRegisterResponse>(this.OnUserRegister);
             MessageDistributer.Instance.Unsubscribe<UserLoginResponse>(this.OnUserLogin);
             MessageDistributer.Instance.Unsubscribe<UserCreateCharacterResponse>(this.OnUserCreateCharacter);
+            MessageDistributer.Instance.Unsubscribe<UserGameEnterResponse>(this.OnGammeEnter);
+            //MessageDistributer.Instance.Unsubscribe<UserGameLeaveResponse>(this.OnGameLeave);
+            MessageDistributer.Instance.Unsubscribe<MapCharacterEnterResponse>(this.OnCharacterEnter);
             NetClient.Instance.OnConnect -= OnGameServerConnect;
             NetClient.Instance.OnDisconnect -= OnGameServerDisconnect;
         }
@@ -220,5 +226,51 @@ namespace Services
 
             }
         }
+
+        public void SendGameEnter(int characterIdx)
+        {
+            Debug.LogFormat("GameEnterRequest::characterIdx :{0}", characterIdx);
+            NetMessage message = new NetMessage();
+            message.Request = new NetMessageRequest();
+            message.Request.gameEnter = new UserGameEnterRequest();
+            message.Request.gameEnter.characterIdx = characterIdx;
+            NetClient.Instance.SendMessage(message);
+        }
+
+        public void SendGameLeave(int characterIdx)
+        {
+            Debug.LogFormat("GameEnterRequest::characterIdx :{0}", characterIdx);
+            NetMessage message = new NetMessage();
+            message.Request = new NetMessageRequest();
+            message.Request.gameLeave = new UserGameLeaveRequest();
+            NetClient.Instance.SendMessage(message);
+        }
+
+
+        void OnGammeEnter(object sender, UserGameEnterResponse response)
+        {
+            Debug.LogFormat("OnGameEnter:{0} [{1}]", response.Result, response.Errormsg);
+
+            if (response.Result == Result.Success)
+            {
+                
+            }
+        }
+
+        private void OnCharacterEnter(object sender, MapCharacterEnterResponse response)
+        {
+            Debug.LogFormat("OnCharacterEnter:{0}", response.mapId);  //这步不存在请求 直接返回mapid
+
+            NCharacterInfo info = response.Characters[0];
+            User.Instance.CurrentCharacter = info;
+
+            SceneManager.Instance.LoadScene(DataManager.Instance.Maps[response.mapId].Resource);
+        }
+
+        private void OnGameLeave(object sender, UserGameLeaveResponse response)
+        {
+            Debug.LogFormat("OnGameLeave:{0} [{1}]", response.Result, response.Errormsg);
+        }
+
     }
 }

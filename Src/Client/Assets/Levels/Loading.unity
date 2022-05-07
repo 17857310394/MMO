@@ -131,6 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 85131195}
   - component: {fileID: 85131196}
+  - component: {fileID: 85131197}
   m_Layer: 0
   m_Name: LoadingManager
   m_TagString: Untagged
@@ -170,6 +171,19 @@ MonoBehaviour:
   progressBar: {fileID: 2078155329}
   progressText: {fileID: 969841936}
   progressNumber: {fileID: 1343993653}
+--- !u!114 &85131197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85131194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07f59903f46be44592cf686d82fe8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  global: 1
 --- !u!114 &93493986 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5218064430902501429, guid: 8d5d4401ea790e54680d9e5274819e7e,

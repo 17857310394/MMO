@@ -7,6 +7,7 @@ using Common;
 using Network;
 using SkillBridge.Message;
 using GameServer.Entities;
+using GameServer.Managers;
 
 namespace GameServer.Services
 {
@@ -18,9 +19,10 @@ namespace GameServer.Services
             MessageDistributer<NetConnection<NetSession>>.Instance.Subscribe<UserRegisterRequest>(this.OnRegister);
             MessageDistributer<NetConnection<NetSession>>.Instance.Subscribe<UserLoginRequest>(this.OnLogin);
             MessageDistributer<NetConnection<NetSession>>.Instance.Subscribe<UserCreateCharacterRequest>(this.OnCreateCharacter);
+            MessageDistributer<NetConnection<NetSession>>.Instance.Subscribe<UserGameEnterRequest>(this.OnGameEnter);
         }
 
-
+        
         public void Init()
         {
 
@@ -126,5 +128,24 @@ namespace GameServer.Services
             byte[] data = PackageHandler.PackMessage(message);
             sender.SendData(data, 0, data.Length);
         }
+
+        void OnGameEnter(NetConnection<NetSession> sender, UserGameEnterRequest request)
+        {
+            Log.InfoFormat("UserGameEnterRequest: CharacterIdx:{0}", request.characterIdx);
+            TCharacter dbChar = sender.Session.User.Player.Characters.ElementAt(request.characterIdx);
+            Character character = CharacterManager.Instance.AddCharacter(dbChar);
+
+            NetMessage message = new NetMessage();
+            message.Response = new NetMessageResponse();
+            message.Response.gameEnter = new UserGameEnterResponse();
+            message.Response.gameEnter.Result = Result.Success;
+            message.Response.gameEnter.Errormsg = "None";
+
+            byte[] data = PackageHandler.PackMessage(message);
+            sender.SendData(data, 0, data.Length);
+            sender.Session.Character = character;
+            MapManager.Instance[dbChar.MapID].CharacterEnter(sender, character);
+        }
+
     }
 }

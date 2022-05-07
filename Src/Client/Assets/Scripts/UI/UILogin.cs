@@ -10,9 +10,9 @@ public class UILogin : MonoBehaviour
     public InputField username;
     public InputField password;
 
-    private void Start()
-    {
-        UserService.Instance.OnLogin += this.OnLogin;
+    // Use this for initialization
+    void Start () {
+        UserService.Instance.OnLogin = OnLogin;
     }
 
     public void OnClickLogin()
@@ -35,9 +35,9 @@ public class UILogin : MonoBehaviour
     {
         if (result == Result.Success)
         {
-            //成功登录
-            Debug.Log("登录成功");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("CharSelect");
+            //登录成功，进入角色选择
+            //MessageBox.Show("登录成功,准备角色选择" + message,"提示", MessageBoxType.Information);
+            SceneManager.Instance.LoadScene("CharSelect");
         }
         else
         {

@@ -1088,7 +1088,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u521B\u5EFA\u89D2\u8272"
+  m_Text: "\u8FDB\u5165\u6E38\u620F"
 --- !u!222 &1209736080
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1294,9 +1294,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1481351040
 MonoBehaviour:
@@ -1430,7 +1430,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1994657762}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.6140825
+  m_Size: 0.6143596
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1640,7 +1640,7 @@ GameObject:
   - component: {fileID: 1653540112}
   - component: {fileID: 1653540111}
   m_Layer: 5
-  m_Name: selectCharacter_btn
+  m_Name: Play_btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1708,7 +1708,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1653540112}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 447519688}
+        m_MethodName: OnClickPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1653540112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2070,7 +2081,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1826820434
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2266,8 +2277,8 @@ RectTransform:
   m_Father: {fileID: 1010362236}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.38591748}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}

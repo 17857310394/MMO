@@ -101,7 +101,7 @@ public class UICharacterSelect : MonoBehaviour {
         for (int i = 0; i < 3; i++)
         {
             titles[i].gameObject.SetActive(i == charClass - 1);
-            
+            names[i].text = DataManager.Instance.Characters[i + 1].Name;
         }
 
         descs.text = DataManager.Instance.Characters[charClass].Description;
@@ -138,7 +138,7 @@ public class UICharacterSelect : MonoBehaviour {
     {
         if (selectCharacterIdx >= 0)
         {
-            MessageBox.Show("进入游戏", "进入游戏", MessageBoxType.Confirm);
+            UserService.Instance.SendGameEnter(selectCharacterIdx);
         }
     }
 
