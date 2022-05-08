@@ -61,11 +61,11 @@ namespace GameServer.Models
 
             message.Response.mapCharacterEnter = new MapCharacterEnterResponse();
             message.Response.mapCharacterEnter.mapId = this.Define.ID;
-            message.Response.mapCharacterEnter.Characters.Add(character.Info);
+            message.Response.mapCharacterEnter.Characters.Add(character.Info); //先添加当前进入的角色
 
             foreach (var kv in this.MapCharacters)
             {
-                message.Response.mapCharacterEnter.Characters.Add(kv.Value.character.Info);
+                message.Response.mapCharacterEnter.Characters.Add(kv.Value.character.Info); //再添加后续地图其他角色
                 this.SendCharacterEnterMap(kv.Value.connection, character.Info);
             }
             
@@ -75,6 +75,7 @@ namespace GameServer.Models
             conn.SendData(data, 0, data.Length);
         }
 
+        //通知该地图的其他用户消息
         void SendCharacterEnterMap(NetConnection<NetSession> conn, NCharacterInfo character)
         {
             NetMessage message = new NetMessage();

@@ -261,7 +261,7 @@ namespace Services
         {
             Debug.LogFormat("OnCharacterEnter:{0}", response.mapId);  //这步不存在请求 直接返回mapid
 
-            NCharacterInfo info = response.Characters[0];
+            NCharacterInfo info = response.Characters[0]; //第一个角色为当前进入的角色
             User.Instance.CurrentCharacter = info;
 
             SceneManager.Instance.LoadScene(DataManager.Instance.Maps[response.mapId].Resource);
